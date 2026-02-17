@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Симуляция</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/game.css">
+</head>
+<body style="overflow: hidden;">
+    <div id="ui-layer">
+        <div class="hud-text">Пилот: <span id="player-name-display"></span></div>
+        <div class="hud-text">Сложность: <span id="diff-display" style="color:var(--neon-yellow)"></span></div>
+        <div class="hud-text">Время: <span id="timer-display">0.00</span>s / Цель: <span id="target-display"></span>s</div>
+    </div>
+
+    <div id="game-area"></div>
+
+    <div id="message-modal" class="screen-container" style="display: none; position: fixed; top:0; left:0; background: rgba(0,0,0,0.95); z-index: 100;">
+        <h2 id="msg-title">СТАТУС</h2>
+        <p id="msg-desc"></p>
+        <div class="btn-group" id="msg-buttons"></div>
+    </div>
+
+    <script src="../scripts/storage.js"></script>
+    <script src="../scripts/game.js"></script>
+</body>
+</html>

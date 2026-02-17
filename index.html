@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главное меню</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/main_menu.css">
+</head>
+<body>
+    <div class="screen-container">
+        <h1 style="color: var(--color-blue)">ВРЕМЕННОЙ ПОРТАЛ</h1>
+        <p style="color: #ccc;">С возвращением, пилот <span id="player-name" style="color: var(--color-green)"></span></p>
+        
+        <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+            <div>
+                <label style="display:block; text-align:center;">УРОВЕНЬ УГРОЗЫ:</label>
+                <select id="difficulty-select">
+                    <option value="0">0 - ЛЕГКО</option>
+                    <option value="1" selected>1 - НОРМА</option>
+                    <option value="2">2 - СЛОЖНО</option>
+                    <option value="3">3 - ОЧЕНЬ СЛОЖНО</option>
+                </select>
+            </div>
+            <div>
+                <label style="display:block; text-align:center;">СЕКТОР:</label>
+                <select id="level-select">
+                <option value="1">Уровень 1 - Старт (Цель: 10.0с)</option>
+				<option value="2">Уровень 2 - Временная петля (Цель: 15.0с)</option>
+                <option value="3">Уровень 3 - Лабиринт (Цель: 20.0с)</option>
+                
+            </select>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button onclick="startGame()">ЗАПУСК</button>
+            <button class="btn-yellow" onclick="goToRating()">АРХИВ ДАННЫХ</button>
+            <button class="btn-red" onclick="logout()">СМЕНИТЬ ПИЛОТА</button>
+        </div>
+    </div>
+    
+    <script src="scripts/storage.js"></script>
+    <script src="scripts/main_menu.js"></script>
+</body>
+</html>

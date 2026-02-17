@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Таблица лидеров</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/rating.css">
+</head>
+<body>
+    <div class="screen-container">
+        <h1 style="color: var(--neon-green)">АРХИВ ДАННЫХ</h1>
+        
+        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+            <button id="tab-lvl-1" onclick="viewRecords(1)">УРОВЕНЬ 1</button>
+            <button id="tab-lvl-2" onclick="viewRecords(2)">УРОВЕНЬ 2</button>
+            <button id="tab-lvl-3" onclick="viewRecords(3)">УРОВЕНЬ 3</button>
+        </div>
+
+        <table id="records-table">
+            <thead>
+                <tr>
+                    <th>Место</th>
+                    <th>Пилот</th>
+                    <th>Сложность</th>
+                    <th>Очки</th>
+                    <th>Отклонение (Δ)</th>
+                </tr>
+            </thead>
+            <tbody id="records-list"></tbody>
+        </table>
+        
+        <button style="margin-top: 30px;" onclick="window.location.href='../index.html'">НАЗАД В МЕНЮ</button>
+    </div>
+
+    <script src="../scripts/storage.js"></script>
+    <script src="../scripts/rating.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+#records-table {
+    border-collapse: collapse; width: 90%; max-width: 800px;
+    margin-bottom: 30px; font-size: 16px;
+}
+#records-table th, #records-table td { border: 2px solid white; padding: 10px; text-align: center; }
+#records-table th { color: var(--color-blue); background: black; }
+.diff-cell { color: var(--color-yellow); font-weight: bold; }
+.points-cell { color: var(--color-green); font-weight: bold; }
