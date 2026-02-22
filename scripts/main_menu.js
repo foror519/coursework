@@ -47,3 +47,24 @@ function updateSessionData() {
     const session = { level: level, difficulty: diff };
     localStorage.setItem('timeGame_session', JSON.stringify(session));
 }
+
+document.addEventListener('keydown', (e) => {
+    const diffSelect = document.getElementById('difficulty-select');
+    const lvlSelect = document.getElementById('level-select');
+
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        let current = parseInt(diffSelect.value);
+        current = e.key === 'ArrowUp' ? Math.min(3, current + 1) : Math.max(0, current - 1);
+        diffSelect.value = current;
+        updateSessionData();
+    } 
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        let current = parseInt(lvlSelect.value);
+        current = e.key === 'ArrowRight' ? Math.min(3, current + 1) : Math.max(0, current - 1);
+        lvlSelect.value = current;
+        updateSessionData();
+    } 
+    else if (e.key === 'Enter') {
+        startGame();
+    }
+});

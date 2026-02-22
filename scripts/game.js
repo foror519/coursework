@@ -15,10 +15,10 @@ const state = {
     startTime: 0, 
     timerInterval: null,
     
-    targetTime: session.level === 1 ? 10 : session.level === 2 ? 15 : 20,
+    targetTime: (session.level === 0 || session.level === 1) ? 10 : session.level === 2 ? 15 : 20,
     maxBuffer: 2,
     
-    bestScores: storage.getJSON('timeGame_best_v6', { "1": {}, "2": {}, "3": {} }),
+    bestScores: storage.getJSON('timeGame_best_v6', { "0": {}, "1": {}, "2": {}, "3": {} }),
     
     obsTimers: [],
     lastMouse: { x: null, y: null }
@@ -56,7 +56,35 @@ function createTrack() {
     dom.area.innerHTML = '<div class="void-zone"></div>';
     let segments = [], obstacles = [];
 
-    if (state.level === 1) {
+    if (state.level === 0) {
+        const pathHeight = Math.floor(Math.random() * 61) + 30;
+        const pathY = 250 - (pathHeight / 2);
+        const topPathHeight = Math.floor(Math.random() * 61) + 30;
+        const topPathWidth = Math.floor(Math.random() * 201) + 150;
+        const endZoneX = 380 + topPathWidth;
+        const endZoneY = 150;
+
+        segments = [
+            { w: 60, h: pathHeight, x: 20, y: pathY, type: 'start' }, 
+            { w: 240, h: pathHeight, x: 80, y: pathY, type: 'path' },            
+            { w: 60, h: 200, x: 320, y: 150, type: 'path' },            
+            { w: topPathWidth, h: topPathHeight, x: 380, y: 150, type: 'path' },           
+            { w: 60, h: topPathHeight, x: endZoneX, y: endZoneY, type: 'end' }
+        ];
+
+        obstacles.push({ 
+            x: 250, 
+            y: pathY, 
+            w: 30, 
+            h: pathHeight, 
+            anim: 'moveHorizontal', 
+            baseDur: 1.5, 
+            dist: 100 
+        });
+
+        
+        
+    } else if (state.level === 1) {
         segments = [
             { w: 60, h: 60, x: 20, y: 220, type: 'start' }, { w: 240, h: 60, x: 80, y: 220, type: 'path' },
             { w: 60, h: 200, x: 320, y: 150, type: 'path' }, { w: 300, h: 60, x: 380, y: 150, type: 'path' },
@@ -125,8 +153,46 @@ function createTrack() {
         const el = document.createElement('div');
         
         if (seg.type === 'start') {
-            el.className = 'zone start-zone'; el.textContent = 'START';
-            el.onmouseenter = e => startTimer(e);
+            el.className = 'zone start-zone'; 
+            el.textContent = 'START';
+            
+            let chargeTimer = null;
+            let isCharging = false;
+
+            el.onmousedown = (e) => {
+                if (state.isPlaying) return;
+                isCharging = true;
+                el.style.transform = "scale(0.9)";
+                el.style.backgroundColor = "var(--color-yellow)";
+                el.style.color = "black";
+                el.textContent = "...";
+                
+                chargeTimer = setTimeout(() => {
+                    if (isCharging) {
+                        el.style.transform = "scale(1)";
+                        el.style.backgroundColor = "var(--color-green)";
+                        el.style.color = "white";
+                        el.textContent = "GO!";
+                        startTimer(e);
+                    }
+                }, 1000);
+            };
+
+            const resetCharge = () => {
+                if (!state.isPlaying && isCharging) {
+                    isCharging = false;
+                    clearTimeout(chargeTimer);
+                    el.style.transform = "scale(1)";
+                    el.style.backgroundColor = "var(--color-blue)";
+                    el.style.color = "white";
+                    el.textContent = "START";
+                }
+            };
+
+            el.onmouseup = resetCharge;
+            el.onmouseleave = resetCharge;
+            el.ondragstart = () => false; 
+            
         } else if (seg.type === 'end') {
             el.className = 'zone end-zone'; el.id = 'end-zone'; el.textContent = 'END';
             el.onmouseenter = winLevel;
@@ -149,7 +215,7 @@ function createTrack() {
             el.style.rotate = `${seg.deg}deg`;
         }
 
-        if (seg.borderRadius && seg.type !== 'ring' && seg.type !== 'void-hole') {
+        if (seg.borderRadius && seg.type !== 'ring') {
             el.style.borderRadius = seg.borderRadius;
         }
         
@@ -173,7 +239,6 @@ function createTrack() {
             animation: ${animString};
             --move-dist: ${distance}px; 
         `;
-        
         
         if (obs.borderRadius !== undefined) {
             el.style.borderRadius = obs.borderRadius;
@@ -280,6 +345,10 @@ function endGame(isWin, title, desc) {
     clearInterval(state.timerInterval);
     state.isPlaying = false;
     
+    if (isWin) {
+        createFireworks();
+    }
+    
     dom.msgTitle.textContent = title; 
     dom.msgTitle.style.color = isWin ? "var(--color-green)" : "var(--color-red)";
     dom.msgDesc.textContent = desc;
@@ -312,4 +381,28 @@ function endGame(isWin, title, desc) {
     dom.msgButtons.appendChild(btnMenu);
 
     dom.modal.style.display = 'flex';
+}
+
+function createFireworks() {
+    const colors = ['var(--color-blue)', 'var(--color-green)', 'var(--color-yellow)', 'white'];
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    for (let i = 0; i < 60; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'firework-particle';
+        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        particle.style.left = centerX + 'px';
+        particle.style.top = centerY + 'px';
+
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 200 + 50;
+        
+        particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+        particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 1000);
+    }
 }

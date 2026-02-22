@@ -2,11 +2,12 @@ const currentPlayer = storage.get('timeGame_player');
 if (!currentPlayer) window.location.href = 'login.html';
 
 
-const bestScores = storage.getJSON('timeGame_best_v6', { "1": {}, "2": {}, "3": {} });
+const bestScores = storage.getJSON('timeGame_best_v6', { "0": {}, "1": {}, "2": {}, "3": {} });
 
-window.onload = () => viewRecords(1);
+window.onload = () => viewRecords(0);
 
 function viewRecords(lvl) {
+	document.getElementById('tab-lvl-0').className = lvl === 0 ? 'btn-yellow' : '';
     document.getElementById('tab-lvl-1').className = lvl === 1 ? 'btn-yellow' : '';
     document.getElementById('tab-lvl-2').className = lvl === 2 ? 'btn-yellow' : '';
     document.getElementById('tab-lvl-3').className = lvl === 3 ? 'btn-yellow' : '';
