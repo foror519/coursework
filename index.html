@@ -24,19 +24,18 @@
             <div>
                 <label style="display:block; text-align:center;">СЕКТОР:</label>
                 <select id="level-select">
-				<option value="0">Уровень 0 - Динамический (Цель: 10.0с)</option>
-                <option value="1">Уровень 1 - Старт (Цель: 10.0с)</option>
-				<option value="2">Уровень 2 - Временная петля (Цель: 15.0с)</option>
-                <option value="3">Уровень 3 - Лабиринт (Цель: 20.0с)</option>
-                
-            </select>
+                    <option value="0">Уровень 0 - Динамический (Цель: 10.0с)</option>
+                    <option value="1">Уровень 1 - Старт (Цель: 10.0с)</option>
+                    <option value="2">Уровень 2 - Временная петля (Цель: 15.0с)</option>
+                    <option value="3">Уровень 3 - Лабиринт (Цель: 20.0с)</option>
+                </select>
             </div>
         </div>
 
         <div class="btn-group">
-            <button onclick="startGame()">ЗАПУСК</button>
-            <button class="btn-yellow" onclick="goToRating()">АРХИВ ДАННЫХ</button>
-            <button class="btn-red" onclick="logout()">СМЕНИТЬ ПИЛОТА</button>
+            <button id="btn-start" onclick="startGame()">ЗАПУСК</button>
+            <button id="btn-rating" class="btn-yellow" onclick="goToRating()">АРХИВ ДАННЫХ</button>
+            <button id="btn-logout" class="btn-red" onclick="logout()">СМЕНИТЬ ПИЛОТА</button>
         </div>
     </div>
     

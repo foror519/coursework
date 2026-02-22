@@ -57,3 +57,12 @@ button.btn-green:hover { background: var(--color-green); color: white; }
 
 button.btn-yellow { border-color: var(--color-yellow); color: var(--color-yellow); }
 button.btn-yellow:hover { background: var(--color-yellow); color: black; }
+
+.menu-focused {
+    box-shadow: 0 0 15px var(--color-yellow) !important;
+    border-color: var(--color-yellow) !important;
+    outline: 3px solid var(--color-yellow) !important;
+    transform: scale(1.05);
+    transition: all 0.2s ease-out;
+    z-index: 10;
+}

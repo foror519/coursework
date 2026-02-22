@@ -1,13 +1,18 @@
 const currentPlayer = storage.get('timeGame_player');
 if (!currentPlayer) window.location.href = 'login.html';
 
-
 const bestScores = storage.getJSON('timeGame_best_v6', { "0": {}, "1": {}, "2": {}, "3": {} });
 
-window.onload = () => viewRecords(0);
+let activeRow = 0;
+let activeCol = 0;
+let menuGrid = [];
+
+window.onload = () => {
+    viewRecords(0);
+};
 
 function viewRecords(lvl) {
-	document.getElementById('tab-lvl-0').className = lvl === 0 ? 'btn-yellow' : '';
+    document.getElementById('tab-lvl-0').className = lvl === 0 ? 'btn-yellow' : '';
     document.getElementById('tab-lvl-1').className = lvl === 1 ? 'btn-yellow' : '';
     document.getElementById('tab-lvl-2').className = lvl === 2 ? 'btn-yellow' : '';
     document.getElementById('tab-lvl-3').className = lvl === 3 ? 'btn-yellow' : '';
@@ -43,3 +48,67 @@ function viewRecords(lvl) {
         `;
     });
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+    menuGrid = [
+        [
+            document.getElementById('tab-lvl-0'),
+            document.getElementById('tab-lvl-1'),
+            document.getElementById('tab-lvl-2'),
+            document.getElementById('tab-lvl-3')
+        ],
+        [document.getElementById('btn-back')]
+    ];
+
+    menuGrid.forEach((row, rIdx) => {
+        row.forEach((el, cIdx) => {
+            if (!el) return;
+            el.addEventListener('mouseenter', () => {
+                activeRow = rIdx;
+                activeCol = cIdx;
+                renderFocus();
+            });
+        });
+    });
+
+    renderFocus();
+});
+
+function renderFocus() {
+    menuGrid.forEach(row => row.forEach(el => {
+        if (el) el.classList.remove('menu-focused');
+    }));
+    const target = menuGrid[activeRow][activeCol];
+    if (target) {
+        target.classList.add('menu-focused');
+        target.blur();
+    }
+}
+
+document.addEventListener('keydown', (e) => {
+    const gameKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter'];
+    if (!gameKeys.includes(e.key)) return;
+
+    e.preventDefault();
+    if (document.activeElement) document.activeElement.blur();
+
+    if (e.key === 'ArrowDown') {
+        activeRow = Math.min(menuGrid.length - 1, activeRow + 1);
+        if (activeCol >= menuGrid[activeRow].length) activeCol = 0;
+    } 
+    else if (e.key === 'ArrowUp') {
+        activeRow = Math.max(0, activeRow - 1);
+        if (activeCol >= menuGrid[activeRow].length) activeCol = 0;
+    } 
+    else if (e.key === 'ArrowRight') {
+        activeCol = Math.min(menuGrid[activeRow].length - 1, activeCol + 1);
+    } 
+    else if (e.key === 'ArrowLeft') {
+        activeCol = Math.max(0, activeCol - 1);
+    } 
+    else if (e.key === 'Enter') {
+        menuGrid[activeRow][activeCol].click();
+    }
+
+    renderFocus();
+});
